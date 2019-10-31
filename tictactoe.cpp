@@ -55,8 +55,10 @@ void mostrarTablero() {
     cout << "Turno de " << jugador << endl;
     cout << "En que fila desea jugar: ";
     cin >> fila;
+    fila--;
     cout << "En que columna desea jugar: ";
     cin >> columna;
+    columna--;
     tablero[fila][columna] = jugador;
     char ganador = hayGanador();
     if (ganador != '_') {
