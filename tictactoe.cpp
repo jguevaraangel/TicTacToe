@@ -9,6 +9,68 @@ char tablero[][3] = {{'_', '_', '_'},
                      {'_', '_', '_'},
 };
 
+class Tree {
+private:
+  struct {
+    char situacion[][3] = {{'_', '_', '_'},
+                           {'_', '_', '_'},
+                           {'_', '_', '_'},
+    };
+    Node* parent;
+    Node* one;
+    Node* two;
+    Node* three;
+    Node* four;
+    Node* five;
+    Node* six;
+    Node* seven;
+    Node* eight;
+    Node* nine;
+  };
+  Node* root;
+  void destroyRecursive(Node* p);
+  void Crear_arbol(Node* &p, Node* &ptr, char element);
+public:
+  Tree();
+  ~Tree();
+};
+
+Tree::Tree() {
+  root = nullptr;
+}
+
+Tree::destroyRecursive(Node* p) {
+  if (p != nullptr) {
+    destroyRecursive(p->one);
+    destroyRecursive(p->two);
+    destroyRecursive(p->three);
+    destroyRecursive(p->four);
+    destroyRecursive(p->five);
+    destroyRecursive(p->six);
+    destroyRecursive(p->seven);
+    destroyRecursive(p->eight);
+    destroyRecursive(p->nine);
+    delete p;
+  }
+}
+
+Tree::~Tree() {
+  destroyRecursive(root);
+}
+
+Tree::Crear_arbol(Node* &p, Node* &ptr, char element) {
+  if (ptr == nullptr) {
+    for (int i = 0; i < 3; i++) {
+      for (int j = 0; j < 3; j++) {
+          if (ptr->situacion[i][j] == "_") {
+            Node* nNode = new Node;
+            nNode -> situacion[i][j] = element;
+          }
+      }
+    }
+  }
+}
+
 char hayGanador() {
     //validacion horizontal
     for (int i = 0; i < 3; i++) {
