@@ -1,4 +1,4 @@
-#ifndef __tree__hpp
+	#ifndef __tree__hpp
 #define __tree__hpp
 #include <iostream>
 #include <vector>
@@ -7,9 +7,9 @@ using namespace std;
 class Tree {
 private:
 	struct Node {
-		char situacion[3][3] = {{'_', '_', '_'},
-								{'_', '_', '_'},
-								{'_', '_', '_'},
+		char situacion[3][3] = {{'X', 'O', '_'},
+														{'O', 'X', '_'},
+														{'X', 'O', '_'},
 		};
 		Node* padre;
 		vector<Node*> hijos;
@@ -20,12 +20,47 @@ private:
 	void destroyRecursive(Node* &p);
 	void insertNode(Node* &p, Node* &ptr, int num_hijos);
 	void display(Node* &n);
+	char hayGanador(char** situacion);
+	void obtenerSituacion(Node* &p);
 
 public:
 	Tree(); //Crea todas las posibles situaciones del juego
 	~Tree();
 	void display();
 };
+
+void Tree::obtenerSituacion(Node* &p) {
+	for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 3; j++) {
+					cout << p->situacion[i][j] << "\t";
+			}
+			cout << endl;
+	}
+}
+
+char Tree::hayGanador(char** situacion) {
+	//Validacion horizontal
+	for (int i = 0; i < 3; i++) {
+			if (situacion[i][0] != '_' && situacion[i][0] == situacion[i][1] && situacion[i][1] == situacion[i][2]) {
+					return situacion[i][0];
+			}
+	}
+	//Validacion vertical
+	for (int i = 0; i < 3; i++) {
+			if (situacion[0][i] != '_' && situacion[0][i] == situacion[1][i] && situacion[1][i] == situacion[2][i]) {
+					return situacion[0][i];
+			}
+	}
+	//Validacion diagonal izquierda a derecha
+	if (situacion[0][0] != '_' && situacion[0][0] == situacion[1][1] && situacion[1][1] == situacion[2][2])
+			return situacion[0][0];
+
+	//Validacion diagonal derecha a izquierda
+	if (situacion[0][2] != '_' && situacion[0][2] == situacion[1][1] && situacion[1][1] == situacion[2][0])
+			return situacion[0][2];
+
+return '_';
+}
 
 Tree::Tree() {
   root = nullptr;
@@ -62,10 +97,10 @@ void Tree::insertNode(Node* &p, Node* &ptr, int num_hijos) {
 void Tree::display(Node* &n) {
     if(n != nullptr) {
         cout << "Numero de hijos: " << n->hijos.size() << endl;
+				obtenerSituacion(n);
         cout << endl;
         for (unsigned int i = 0; i < n->hijos.size(); i++) {
             display(n->hijos[i]);
-
         }
     }
 }
