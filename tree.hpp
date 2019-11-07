@@ -1,4 +1,4 @@
-	#ifndef __tree__hpp
+#ifndef __tree__hpp
 #define __tree__hpp
 #include <iostream>
 #include <vector>
@@ -22,12 +22,46 @@ private:
 	void display(Node* &n);
 	char hayGanador(char** situacion);
 	void obtenerSituacion(Node* &p);
+	void posibilidades(Node* &p, bool turno);
 
 public:
 	Tree(); //Crea todas las posibles situaciones del juego
 	~Tree();
 	void display();
+	void posibilidades();
 };
+
+void Tree::posibilidades(Node* &p, bool turno) {
+	if (p->hijos[0] != nullptr) {
+		char jugador = turno ? 'X' : 'O';
+		/*for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 3; j++) {
+				if (p->situacion[i][j] == '_') {
+					p->situacion[i][j] = jugador;
+					goto salto;
+				}
+			}
+		}
+		salto:*/
+		turno = !turno;
+
+		for (unsigned int k = 0; k < p->hijos.size(); k++) {
+			for (int i = 0; i < 3; i++) {
+				for (int j = 0; j < 3; j++) {
+					p->hijos[k]->situacion[i][j] = p->situacion[i][j];
+				}
+			}
+		}
+
+		for (unsigned int k = 0; k < p->hijos.size(); k++) {
+			posibilidades(p->hijos[k], turno);
+		}
+	}
+}
+
+void Tree::posibilidades() {
+		posibilidades(root, true);
+}
 
 void Tree::obtenerSituacion(Node* &p) {
 	for (int i = 0; i < 3; i++) {
@@ -84,14 +118,14 @@ Tree::~Tree() {
 void Tree::insertNode(Node* &p, Node* &ptr, int num_hijos) {
 	if (num_hijos > 0) {
 		ptr = new Node;
-        ptr->padre = p;
-        for (unsigned int i = 0; i < num_hijos; i++) {
-            ptr->hijos.push_back(nullptr);
-        }
-        for (unsigned int i = 0; i < num_hijos; i++) {
-            insertNode(ptr, ptr->hijos[i], num_hijos - 1);
-        }
+    ptr->padre = p;
+    for (unsigned int i = 0; i < num_hijos; i++) {
+        ptr->hijos.push_back(nullptr);
     }
+    for (unsigned int i = 0; i < num_hijos; i++) {
+        insertNode(ptr, ptr->hijos[i], num_hijos - 1);
+    }
+  }
 }
 
 void Tree::display(Node* &n) {

@@ -4,7 +4,7 @@
 bool turnoDeX = false; //Jugador "O" marca primero
 
 char tablero[][3] = {{'_', '_', '_'},
-                     {'_', '_', '_'}, //Tablero vacío
+                     {'_', '_', '_'}, //Tablero vacï¿½o
                      {'_', '_', '_'},
 };
 
@@ -29,7 +29,7 @@ char hayGanador() {
     //Validacion diagonal derecha a izquierda
     if (tablero[0][2] != '_' && tablero[0][2] == tablero[1][1] && tablero[1][1] == tablero[2][0])
         return tablero[0][2];
-	
+
 	return '_';
 }
 
@@ -81,6 +81,7 @@ int main() {
         mostrarTablero();
     }*/
 	Tree t;
+  t.posibilidades();
 	t.display();
     return 0;
 }
