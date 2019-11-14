@@ -29,35 +29,30 @@ public:
 	~Tree();
 	void display();
 	void posibilidades();
+	char hayGanador();
 };
-
+/*
 void Tree::posibilidades(Node* &p, bool turno) {
 	if (p->hijos[0] != nullptr) {
+		char* temp = p->situacion;
 		char jugador = turno ? 'X' : 'O';
-		/*for (int i = 0; i < 3; i++) {
-			for (int j = 0; j < 3; j++) {
-				if (p->situacion[i][j] == '_') {
-					p->situacion[i][j] = jugador;
-					goto salto;
-				}
-			}
-		}
-		salto:*/
-		turno = !turno;
-
 		for (unsigned int k = 0; k < p->hijos.size(); k++) {
 			for (int i = 0; i < 3; i++) {
 				for (int j = 0; j < 3; j++) {
-					p->hijos[k]->situacion[i][j] = p->situacion[i][j];
+						if (p->hijos[k]->situacion[i][j] == '_' && p->hijos[k]->situacion[i][j] == temp[i][j]) {
+							p->hijos[k]->situacion[i][j] = jugador;
+							temp[i][j] = jugador;
+						}
 				}
 			}
 		}
+		turno = !turno;
 
 		for (unsigned int k = 0; k < p->hijos.size(); k++) {
 			posibilidades(p->hijos[k], turno);
 		}
 	}
-}
+}*/
 
 void Tree::posibilidades() {
 		posibilidades(root, true);
@@ -93,7 +88,11 @@ char Tree::hayGanador(char** situacion) {
 	if (situacion[0][2] != '_' && situacion[0][2] == situacion[1][1] && situacion[1][1] == situacion[2][0])
 			return situacion[0][2];
 
-return '_';
+	return '_';
+}
+
+char Tree::hayGanador() {
+	return hayGanador(root);
 }
 
 Tree::Tree() {
