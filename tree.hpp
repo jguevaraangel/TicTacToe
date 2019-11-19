@@ -2,14 +2,15 @@
 #define __tree__hpp
 #include <iostream>
 #include <vector>
+#include <array>
 using namespace std;
 
 class Tree {
 private:
 	struct Node {
 		char situacion[3][3] = {{'X', 'O', '_'},
-														{'O', 'X', '_'},
-														{'X', 'O', '_'},
+								{'O', 'X', '_'},
+								{'X', 'O', '_'},
 		};
 		Node* padre;
 		vector<Node*> hijos;
@@ -20,43 +21,39 @@ private:
 	void destroyRecursive(Node* &p);
 	void insertNode(Node* &p, Node* &ptr, int num_hijos);
 	void display(Node* &n);
-	char hayGanador(char** situacion);
 	void obtenerSituacion(Node* &p);
-	void posibilidades(Node* &p, bool turno);
+	void posibilidades(array<array<char,3>,3> situacion);
+	array<array<char, 3>, 3> ponerX(array<array<char, 3>, 3> myMatrix, int x, int y, bool turno);
 
 public:
 	Tree(); //Crea todas las posibles situaciones del juego
 	~Tree();
 	void display();
-	void posibilidades();
-	char hayGanador();
 };
-/*
-void Tree::posibilidades(Node* &p, bool turno) {
-	if (p->hijos[0] != nullptr) {
-		char* temp = p->situacion;
-		char jugador = turno ? 'X' : 'O';
-		for (unsigned int k = 0; k < p->hijos.size(); k++) {
-			for (int i = 0; i < 3; i++) {
-				for (int j = 0; j < 3; j++) {
-						if (p->hijos[k]->situacion[i][j] == '_' && p->hijos[k]->situacion[i][j] == temp[i][j]) {
-							p->hijos[k]->situacion[i][j] = jugador;
-							temp[i][j] = jugador;
-						}
-				}
-			}
-		}
-		turno = !turno;
 
-		for (unsigned int k = 0; k < p->hijos.size(); k++) {
-			posibilidades(p->hijos[k], turno);
-		}
-	}
-}*/
-
-void Tree::posibilidades() {
-		posibilidades(root, true);
+array<array<char,3>, 3> Tree::ponerX(array<array<char,3>, 3> myMatrix, int x, int y){
+	char jugador = turno ? 'X' : 'O';
+    myMatrix[x][y] = jugador;
+    return myMatrix;
 }
+
+void Tree::posibilidades(array<array<char,3>,3> situacion, bool turno) {
+    for (int i = 0; i < 3; ++i) {
+        for (int j = 0; j < 3; ++j) {
+            if (situacion[i][j] == '_') {
+                array<array<char, 3>, 3> temp = ponerX(situacion, i, j, turno);
+                for (int m = 0; m < 3; ++m) {
+                    for (int n = 0; n < 3; ++n) {
+                        cout << temp[m][n] << " ";
+                    }
+                    cout << endl;
+                }
+                cout << "\n\n";
+            }
+        }
+    }
+}
+
 
 void Tree::obtenerSituacion(Node* &p) {
 	for (int i = 0; i < 3; i++) {
@@ -65,34 +62,6 @@ void Tree::obtenerSituacion(Node* &p) {
 			}
 			cout << endl;
 	}
-}
-
-char Tree::hayGanador(char** situacion) {
-	//Validacion horizontal
-	for (int i = 0; i < 3; i++) {
-			if (situacion[i][0] != '_' && situacion[i][0] == situacion[i][1] && situacion[i][1] == situacion[i][2]) {
-					return situacion[i][0];
-			}
-	}
-	//Validacion vertical
-	for (int i = 0; i < 3; i++) {
-			if (situacion[0][i] != '_' && situacion[0][i] == situacion[1][i] && situacion[1][i] == situacion[2][i]) {
-					return situacion[0][i];
-			}
-	}
-	//Validacion diagonal izquierda a derecha
-	if (situacion[0][0] != '_' && situacion[0][0] == situacion[1][1] && situacion[1][1] == situacion[2][2])
-			return situacion[0][0];
-
-	//Validacion diagonal derecha a izquierda
-	if (situacion[0][2] != '_' && situacion[0][2] == situacion[1][1] && situacion[1][1] == situacion[2][0])
-			return situacion[0][2];
-
-	return '_';
-}
-
-char Tree::hayGanador() {
-	return hayGanador(root);
 }
 
 Tree::Tree() {
