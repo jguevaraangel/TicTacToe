@@ -1,5 +1,6 @@
-#include "tree.hpp"
+#include <iostream>
 #include <cstdlib>
+using namespace std;
 
 bool turnoDeX = false; //Jugador 'O' marca primero
 
@@ -138,7 +139,26 @@ void mostrarTablero() {
       cin >> columna;
       columna--;
       cout << endl;
-      tablero[fila][columna] = jugador;
+      if (tablero[fila][columna] == '_') {
+        tablero[fila][columna] = jugador;
+      }
+      else {
+        int f = fila;
+        int c = columna;
+        while (tablero[f][c] != '_') {
+          cout << "¡No puede jugar en esa casilla!" << endl;
+          cout << "En que fila desea jugar: ";
+          cin >> fila;
+          fila--;
+          cout << "En que columna desea jugar: ";
+          cin >> columna;
+          columna--;
+          cout << endl;
+          f = fila;
+          c = columna;
+        }
+        tablero[f][c] = jugador;
+      }
     }
 
     else {
