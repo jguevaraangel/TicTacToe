@@ -166,12 +166,26 @@ void mostrarTablero() {
     }
     char ganador = hayGanador();
     if (ganador != '_') {
-        cout << "Ha ganado " << ganador << endl;
-        exit(0);
+      for (int i = 0; i < 3; i++) {
+          for (int j = 0; j < 3; j++) {
+              cout << tablero[i][j] << "\t";
+          }
+          cout << endl;
+      }
+      cout << endl;
+      cout << "Ha ganado " << ganador << endl;
+      exit(0);
     }
     if (hayEmpate()) {
-        cout << "Hay un empate " << endl;
-        exit(0);
+      for (int i = 0; i < 3; i++) {
+          for (int j = 0; j < 3; j++) {
+              cout << tablero[i][j] << "\t";
+          }
+          cout << endl;
+      }
+  	  cout << endl;
+      cout << "Hay un empate " << endl;
+      exit(0);
     }
     turnoDeX = !turnoDeX;
 }
